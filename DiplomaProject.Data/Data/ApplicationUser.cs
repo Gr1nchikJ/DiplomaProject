@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace DiplomaProject.Server.Data
+namespace DiplomaProject.Data.Data
 {
     public class ApplicationUser : IdentityUser
     {

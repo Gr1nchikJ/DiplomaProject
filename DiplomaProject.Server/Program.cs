@@ -1,10 +1,9 @@
-
-using DiplomaProject.Server.Data;
+using DiplomaProject.Data.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace ReactApp1.Server
+namespace DiplomaProject.Server
 {
     public class Program
     {
