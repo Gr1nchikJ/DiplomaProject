@@ -10,12 +10,23 @@ namespace DiplomaProject.Data.Data
         {
         }
 
+        public DbSet<Certificate> Certificates { get; set; }
+
+        public DbSet<Address> Addresses { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
+
+            builder.Entity<Certificate>()
+                .HasOne(ud => ud.User)
+                .WithMany()
+                .HasForeignKey(ud => ud.UserId);
+
+            builder.Entity<Certificate>()
+                .HasOne(a => a.Address)
+                .WithOne()
+                .HasForeignKey<Certificate>(x => x.AddressId);
         }
     }
 }

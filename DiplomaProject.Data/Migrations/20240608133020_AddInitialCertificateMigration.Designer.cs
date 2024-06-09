@@ -4,16 +4,19 @@ using DiplomaProject.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace DiplomaProject.Server.Migrations
+namespace DiplomaProject.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240608133020_AddInitialCertificateMigration")]
+    partial class AddInitialCertificateMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,41 +24,6 @@ namespace DiplomaProject.Server.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("DiplomaProject.Data.Data.Address", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("AddressPostCode")
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("BlockName")
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("Country")
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("District")
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("Region")
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("Street")
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("StreetNumber")
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Addresses");
-                });
 
             modelBuilder.Entity("DiplomaProject.Data.Data.ApplicationUser", b =>
                 {
@@ -128,34 +96,27 @@ namespace DiplomaProject.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("AddressId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("AuthorityName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("AuthoritytIdentifier")
+                        .IsRequired()
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("EntityIdentifier")
-                        .HasColumnType("nvarchar(256)");
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("EntityName")
-                        .HasColumnType("nvarchar(256)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("varchar(200)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AddressId")
-                        .IsUnique();
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Certificates");
                 });
@@ -291,25 +252,6 @@ namespace DiplomaProject.Server.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("DiplomaProject.Data.Data.Certificate", b =>
-                {
-                    b.HasOne("DiplomaProject.Data.Data.Address", "Address")
-                        .WithOne()
-                        .HasForeignKey("DiplomaProject.Data.Data.Certificate", "AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DiplomaProject.Data.Data.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Address");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

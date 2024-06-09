@@ -10,8 +10,4 @@
     <ProjectReference Include="..\DiplomaProject.Data\DiplomaProject.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="NewFolder\" />
-  </ItemGroup>
-
 </Project>

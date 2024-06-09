@@ -33,7 +33,7 @@ function Login() {
             setError("");
             // post data to the /register api
 
-            var loginurl = "";
+            let loginurl = "";
             if (rememberme == true)
                 loginurl = "/login?useCookies=true";
             else

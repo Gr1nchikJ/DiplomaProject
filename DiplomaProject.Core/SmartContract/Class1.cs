@@ -1,4 +1,4 @@
-﻿using DiplomaProject.Core.Model;
+﻿using DiplomaProject.Core.Model.Certificate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace DiplomaProject.Core.SmartContract
 {
     public class Class1
     {
-        public bool Do(ICertificate certificate)
+        public bool Do(ICertificateModel certificate)
         {
             return true;
         }
