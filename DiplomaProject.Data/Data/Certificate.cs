@@ -23,6 +23,14 @@ namespace DiplomaProject.Data.Data
 
         public Address Address { get; set; }
 
+        public Guid ContactInfoId { get; set; }
+
+        public ContactInfo ContactInfo { get; set; }
+
+        [Column(TypeName = "nvarchar(256)")]
+        [AllowNull]
+        public string? CertificateName { get; set; } 
+
         [Column(TypeName = "nvarchar(256)")]
         [AllowNull]
         public string? AuthorityName { get; set; }
@@ -42,5 +50,13 @@ namespace DiplomaProject.Data.Data
         [Column(TypeName = "nvarchar(256)")]
         [AllowNull] 
         public string? Name { get; set; }
+
+        [Column(TypeName = "nvarchar(max)")]
+        [AllowNull]
+        public string? Comments { get; set; }
+
+        public bool IsApprovedByAdmin { get; set; } = false;
+
+        public bool IsPublishedToBlockchain { get; set; } = false; 
     }
 }

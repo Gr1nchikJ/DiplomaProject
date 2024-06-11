@@ -1,5 +1,6 @@
 ﻿using DiplomaProject.Core.Commands.Certificate;
 using DiplomaProject.Core.Model.Certificate;
+using DiplomaProject.Core.Queries;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,11 +10,25 @@ namespace DiplomaProject.Server.Controllers
     [Route("[controller]")]
     public class CertificateController : Controller
     {
-        // GET: CertificateController
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAll([FromServices] IGetAllCertificatesQuery getAllCertificatesQuery)
         {
-            return View();
+           var result = await getAllCertificatesQuery.ExecuteAsync();
+
+            return Ok(result);
+        }
+
+        [HttpGet("{id}", Name = "GetById")]
+        public async Task<IActionResult> GetById(Guid id, [FromServices] IGetByIdCertificateQuery getByIdCertificateQuery)
+        {
+            var result = await getByIdCertificateQuery.ExecuteAsync(id);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
         }
 
         [HttpPost(Name = "CreateCertificate")]
@@ -27,6 +42,19 @@ namespace DiplomaProject.Server.Controllers
             var result = await createCertificateCommand.ExecuteAsync(createCertificateModel);
 
             return Created(string.Empty, result);
+        }
+
+        [HttpDelete("{id}", Name = "Delete")]
+        public async Task<IActionResult> Delete(Guid id, [FromServices] IDeleteCertificateCommand deleteCertificateCommand)
+        {
+            var result = await deleteCertificateCommand.ExecuteAsync(id);
+
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return Ok();
         }
     }
 }

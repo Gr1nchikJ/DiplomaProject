@@ -5,15 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DiplomaProject.Core.SmartContract
+namespace DiplomaProject.Core.Queries
 {
-    public class Class1
+    public interface IDeleteCertificateCommand
     {
-        public bool Do(ICertificateModel certificate)
-        {
-            return true;
-        }
-
-
+        public Task<bool> ExecuteAsync(Guid id);
     }
 }

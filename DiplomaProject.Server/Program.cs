@@ -1,5 +1,6 @@
 using DiplomaProject.Core.Commands.Certificate;
 using DiplomaProject.Core.Commands.Certificates;
+using DiplomaProject.Core.Queries;
 using DiplomaProject.Data.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,9 @@ namespace DiplomaProject.Server
 
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
             builder.Services.AddScoped<ICreateCertificateCommand, CreateCertificateCommand>();
+            builder.Services.AddScoped<IGetAllCertificatesQuery, GetAllCertificatesQuery>();
+            builder.Services.AddScoped<IGetByIdCertificateQuery, GetByIdCertificateQuery>();
+            builder.Services.AddScoped<IDeleteCertificateCommand, DeleteCertificateCommand>();
 
             builder.Services.AddAuthorization();
             builder.Services.AddIdentityApiEndpoints<ApplicationUser>()

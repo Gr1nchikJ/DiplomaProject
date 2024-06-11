@@ -14,6 +14,8 @@ namespace DiplomaProject.Data.Data
 
         public DbSet<Address> Addresses { get; set; }
 
+        public DbSet<ContactInfo> Contacts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -27,6 +29,11 @@ namespace DiplomaProject.Data.Data
                 .HasOne(a => a.Address)
                 .WithOne()
                 .HasForeignKey<Certificate>(x => x.AddressId);
+
+            builder.Entity<Certificate>()
+                .HasOne(c => c.ContactInfo)
+                .WithOne()
+                .HasForeignKey<Certificate>(x => x.ContactInfoId);
         }
     }
 }

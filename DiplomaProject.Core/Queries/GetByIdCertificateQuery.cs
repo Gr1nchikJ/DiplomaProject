@@ -1,41 +1,33 @@
-﻿using DiplomaProject.Core.Commands.Certificate;
-using DiplomaProject.Core.Model.Certificate;
-using Microsoft.EntityFrameworkCore;
+﻿using DiplomaProject.Core.Model.Certificate;
 using DiplomaProject.Data.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DiplomaProject.Core.Commands.Certificates
+namespace DiplomaProject.Core.Queries
 {
-    public class CreateCertificateCommand : ICreateCertificateCommand
+    public class GetByIdCertificateQuery : IGetByIdCertificateQuery
     {
-        private readonly ApplicationDbContext applicationDbContext;
-
-        public CreateCertificateCommand(ApplicationDbContext applicationDbContext)
+        public readonly ApplicationDbContext applicationDbContext;
+        public GetByIdCertificateQuery(ApplicationDbContext applicationDbContext)
         {
             this.applicationDbContext = applicationDbContext;
         }
 
-        public async Task<CertificateModel> ExecuteAsync(CreateCertificateModel createCertificateModel)
+        public async Task<CertificateModel> ExecuteAsync(Guid id)
         {
-            Address certificateAddress = new Address() { };
 
-            var createdAddress = await applicationDbContext.Addresses.AddAsync(certificateAddress);
+            var certificate = await applicationDbContext.Certificates
+                .Include(x => x.Address)
+                .Include(c => c.ContactInfo)
+                .SingleOrDefaultAsync(c => c.Id == id);
 
-            ContactInfo contactInfo = new ContactInfo() { };
-
-            var createContactInfo = await applicationDbContext.Contacts.AddAsync(contactInfo);
-
-            Data.Data.Certificate certificateToAdd = new Data.Data.Certificate(){ UserId = createCertificateModel.UserId.ToString(), AddressId = createdAddress.Entity.Id, ContactInfoId = createContactInfo.Entity.Id };
-
-            var createdCertificate = await applicationDbContext.Certificates.AddAsync(certificateToAdd);
-
-            await applicationDbContext.SaveChangesAsync();
-
-            var certificate = await applicationDbContext.Certificates.Where(x => x.Id == createdCertificate.Entity.Id).FirstOrDefaultAsync();
+            if (certificate == null) {
+                return null;
+            }
 
             var result = new CertificateModel()
             {
@@ -64,5 +56,5 @@ namespace DiplomaProject.Core.Commands.Certificates
 
             return result;
         }
-    }
+}
 }
