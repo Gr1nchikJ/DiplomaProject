@@ -32,6 +32,8 @@
     <ProjectReference Include="..\diplomaproject.client\diplomaproject.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\DiplomaProject.Core\DiplomaProject.Core.csproj" />
+    <ProjectReference Include="..\DiplomaProject.Data\DiplomaProject.Data.csproj" />
   </ItemGroup>
 
 </Project>

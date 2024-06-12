@@ -1,10 +1,12 @@
-
-using DiplomaProject.Server.Data;
+using DiplomaProject.Core.Commands.Certificate;
+using DiplomaProject.Core.Commands.Certificates;
+using DiplomaProject.Core.Queries;
+using DiplomaProject.Data.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace ReactApp1.Server
+namespace DiplomaProject.Server
 {
     public class Program
     {
@@ -15,10 +17,26 @@ namespace ReactApp1.Server
             var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
 
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+            builder.Services.AddScoped<ICreateCertificateCommand, CreateCertificateCommand>();
+            builder.Services.AddScoped<IGetAllCertificatesQuery, GetAllCertificatesQuery>();
+            builder.Services.AddScoped<IGetByIdCertificateQuery, GetByIdCertificateQuery>();
+            builder.Services.AddScoped<IDeleteCertificateCommand, DeleteCertificateCommand>();
 
             builder.Services.AddAuthorization();
             builder.Services.AddIdentityApiEndpoints<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost:8080") // Change to match the URL of your front-end app
+                               .AllowAnyHeader()
+                               .AllowAnyMethod()
+                               .AllowCredentials();
+                    });
+            });
 
             // Add services to the container.
 
@@ -57,6 +75,8 @@ namespace ReactApp1.Server
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors("AllowSpecificOrigin");
 
             app.UseAuthorization();
 
